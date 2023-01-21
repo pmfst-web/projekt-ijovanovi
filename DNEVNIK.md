@@ -4,9 +4,11 @@ Pocetak | Kraj
 ------- | ----
 hh:mm   | hh:mm
 ### Kratki opis promjena
-Definirani zahtjevi aplikacije.
-Dovršena prva faza projekta.
 
-## 23.12.2021.
+
+## 21.1.2023.
+Pocetak | Kraj
+------- | ----
+20:30   | 20:50
 ### Kratki opis promjena
-Napravio sam navigaciju
+Napravljen opis projekta i osnovne idejne funkcionalnosti aplikacije

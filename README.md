@@ -1,5 +1,5 @@
 # Projektne faze
-- [ ] - Opis projekta
+- [x] - Opis projekta
 - [ ] - Početna struktura aplikacije
 - [ ] - Prototip
 - [ ] - Konzultacije
@@ -8,12 +8,16 @@
 
 # Opis projekta
 ## Kratki opis
-Ovdje ide opis projekta
+### Genshin Impact Damage Calculator
+Projekt je izrada aplikacije za izracun DMG pojedinih likova iz igrice Genshin Impact, protiv konkretnih tipova protivnika, radi lakse usporedbe koji je Build s kojim Statsima bolji. 
 
 ## Popis funkcionalnosti
-1. a
-2. b
-3. c
+1. Dodavanje likova na pocetni zaslon
+2. Unosenje stats za te likove
+3. Mogucnost filtriranja favorita
+4. Dodavanja eksternih buffova(Party opcija)
+5. Izbor protivnika i prikaz ocekivanog DMG protiv njih 
+6. Mogucnost spremanja Build1 da se usporedi razlika/uvecanje na novom Build2(?)
 
 
 ## UPUTE

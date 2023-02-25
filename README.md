@@ -9,16 +9,18 @@
 # Opis projekta
 ## Kratki opis
 ### Genshin Impact Damage Calculator
-Projekt je izrada aplikacije za izracun DMG pojedinih likova iz igrice Genshin Impact, protiv konkretnih tipova protivnika, radi lakse usporedbe koji je Build s kojim Statsima bolji. 
+Projekt je izrada aplikacije za prikaz *Damage* pojedinih *Characters* iz igrice *Genshin Impact*, protiv konkretnih tipova *Enemy*, radi lakše usporedbe koji je *Build* bolji, ili jednostavno za dobivanje očekivanog *Damage*. 
 
 ## Popis funkcionalnosti
-1. Dodavanje likova na pocetni zaslon
-2. Unosenje stats za te likove
-3. Mogucnost filtriranja favorita
-4. Dodavanja eksternih buffova(Party opcija)
-5. Izbor protivnika i prikaz ocekivanog DMG protiv njih 
-6. Mogucnost spremanja Build1 da se usporedi razlika/uvecanje na novom Build2(?)
+1. Dodavanje *Character* na *Home Screen*
+2. Unošenje *Cons*, *Skills* i *Stats* odabranog lika na *Character Screen*
+3. Mogućnost filtriranja favorita
+4. Dodavanje osobnih i eksternih *buffova*(*Party* opcija) 
+5. Izbor *Enemy* i prikaz očekivanog *Damage* protiv istih na *Damage Screen*
+6. Mogućnost spremanja trenutnog *Build* radi usporedbe s novim
 
+### Idejna struktura aplikacije
+![My Image](assets/idejna_shema.jpg)
 
 ## UPUTE
 ## Opis projekta

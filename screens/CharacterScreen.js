@@ -44,8 +44,8 @@ const CharacterScreen = ({ route, navigation }) => {
     setAddCharacterVisible(!addCharacterVisible);
   }
 
-  const unesiStats = () => {
-    navigation.navigate('Stats');
+  const unesiStats = (data) => {
+    navigation.navigate('Stats', {id: data.id});
   }
 
   return (

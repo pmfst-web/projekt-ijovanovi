@@ -41,3 +41,17 @@ Pocetak | Kraj
 9:00   | 20:00
 ### Kratki opis promjena
 Napravljeno dodavanje likova i dodani filteri i pretrazivanje. 
+
+## 30.3.2023.
+Pocetak | Kraj
+------- | ----
+16:00   | 19:00
+### Kratki opis promjena
+Dodan splash art na Stats Screen, sljedece Cons i Skillovi.
+
+## 1.4.2023.
+Pocetak | Kraj
+------- | ----
+14:00   | 16:00
+### Kratki opis promjena
+Dodano selektiranje Cons na Stats Screen.

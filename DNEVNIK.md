@@ -13,7 +13,6 @@ Pocetak | Kraj
 ### Kratki opis promjena
 Napravljen opis projekta i osnovne idejne funkcionalnosti aplikacije
 
-
 ## 25.2.2023.
 Pocetak | Kraj
 ------- | ----
@@ -55,3 +54,10 @@ Pocetak | Kraj
 14:00   | 16:00
 ### Kratki opis promjena
 Dodano selektiranje Cons na Stats Screen.
+
+## 2.4.2023.
+Pocetak | Kraj
+------- | ----
+13:00   | 20:00
+### Kratki opis promjena
+Dodano inputi na Stats Screenu, filtriranje favorita na Char Screenu, i dodan dmg za normal i skill na Damage Screen.

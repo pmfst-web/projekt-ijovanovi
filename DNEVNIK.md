@@ -61,3 +61,10 @@ Pocetak | Kraj
 13:00   | 20:00
 ### Kratki opis promjena
 Dodano inputi na Stats Screenu, filtriranje favorita na Char Screenu, i dodan dmg za normal i skill na Damage Screen.
+
+## 2.4.2023. - 3.4.2023
+Pocetak | Kraj
+------- | ----
+22:00   | 01:00
+### Kratki opis promjena
+Dovrsen prototip, trenutno radi DMG za Raiden Shogun i Eula, ostali ce biti dodani(a trenutno imaju placeholder data modifiere od Raiden). Planirano jos stiliziranje prema vision bojama, i spomenute ekstra funckionalnosti.

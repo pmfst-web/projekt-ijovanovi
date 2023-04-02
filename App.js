@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 import { COLORS, icons, SIZES, FONT } from "./constants";
-import { ScreenHeaderBtn } from "./components";
+import ScreenHeaderBtn from "./components/common/header/ScreenHeaderBtn";
 
 //ekrani
 import CharacterScreen from "./screens/CharacterScreen";
@@ -37,7 +37,7 @@ const glavniReducer = combineReducers({
 // Stvaramo centralni spremnik
 const store = createStore(glavniReducer);
 
-export default function App() {
+export default function App({ route, navigation }) {
   const [fontsLoaded] = useFonts({
     DMBold: require("./assets/fonts/DMSans-Bold.ttf"),
     DMMedium: require("./assets/fonts/DMSans-Medium.ttf"),
@@ -100,6 +100,7 @@ export default function App() {
               options={({ route, navigation }) => {
                 const idCharacter = Number(route.params.id);
                 const character = CHARACTERS.find((c) => c.id === idCharacter);
+
                 return {
                   headerTitle: () => (
                     <View

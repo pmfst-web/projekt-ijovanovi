@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
-
 import { COLORS, FONT, SIZES, icons } from "../constants";
-
 
 const CharacterDetails = ({ item }) => {
   return (
@@ -11,16 +9,15 @@ const CharacterDetails = ({ item }) => {
       <View style={styles.characterBox}>
         <Image
           source={{
-            uri: item.splash
+            uri: item.splash,
           }}
-          resizeMode='contain'
+          resizeMode="contain"
           style={styles.characterImage}
         />
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +38,5 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
-
 
 export default CharacterDetails;

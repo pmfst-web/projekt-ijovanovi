@@ -15,11 +15,26 @@ import { COLORS, icons, SIZES, FONT } from "../constants";
 
 import { CHARACTERS } from "../data/charactersData";
 
-const CharacterStatsInput = ({ item }) => {
-
-    const [ charStats, setCharStats] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
-
-
+const CharacterStatsInput = ({
+  item,
+  context,
+  charHP,
+  setCharHP,
+  charATK,
+  setCharATK,
+  charDEF,
+  setCharDEF,
+  charEM,
+  setCharEM,
+  charCR,
+  setCharCR,
+  charCD,
+  setCharCD,
+  charER,
+  setCharER,
+  charDB,
+  setCharDB,
+}) => {
   const visionType = item.vision;
   const dmgBonusType = (visionType) => {
     if (visionType === "Anemo") {
@@ -42,12 +57,16 @@ const CharacterStatsInput = ({ item }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", marginTop: 10, }}>
-        <Text style={{fontSize: SIZES.large, fontFamily: FONT.bold}}>Please input your stats here:</Text>
+    <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
+      <Text style={{ fontSize: SIZES.large, fontFamily: FONT.bold }}>
+        {context}
+      </Text>
       <View style={styles.searchContainer}>
-        <View style={styles.searchBtn} >
+        <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/56/Icon_Attribute_Health.png/revision/latest/scale-to-width-down/40?cb=20210709015027" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/56/Icon_Attribute_Health.png/revision/latest/scale-to-width-down/40?cb=20210709015027",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -55,8 +74,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[0]}
-            onChange={setCharStats[0]}
+            value={charHP}
+            onChangeText={(text) => setCharHP(text)}
             placeholder="Insert HP"
             keyboardType="numeric"
           />
@@ -65,7 +84,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/71/Icon_Attribute_Attack.png/revision/latest/scale-to-width-down/40?cb=20210709014926" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/71/Icon_Attribute_Attack.png/revision/latest/scale-to-width-down/40?cb=20210709014926",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -73,8 +94,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[1]}
-            onChange={setCharStats[1]}
+            value={charATK}
+            onChangeText={(text) => setCharATK(text)}
             placeholder="Insert ATK"
             keyboardType="numeric"
           />
@@ -83,7 +104,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/82/Icon_Attribute_Defense.png/revision/latest/scale-to-width-down/40?cb=20210709014949" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/82/Icon_Attribute_Defense.png/revision/latest/scale-to-width-down/40?cb=20210709014949",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -91,8 +114,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[2]}
-            onChange={setCharStats[2]}
+            value={charDEF}
+            onChangeText={(text) => setCharDEF(text)}
             placeholder="Insert DEF"
             keyboardType="numeric"
           />
@@ -101,7 +124,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/5a/Icon_Attribute_Elemental_Mastery.png/revision/latest/scale-to-width-down/40?cb=20210709015004" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/5a/Icon_Attribute_Elemental_Mastery.png/revision/latest/scale-to-width-down/40?cb=20210709015004",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -109,8 +134,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[3]}
-            onChange={setCharStats[3]}
+            value={charEM}
+            onChangeText={(text) => setCharEM(text)}
             placeholder="Insert EM"
             keyboardType="numeric"
           />
@@ -119,7 +144,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -127,8 +154,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[4]}
-            onChange={setCharStats[4]}
+            value={charCR}
+            onChangeText={(text) => setCharCR(text)}
             placeholder="Insert CR"
             keyboardType="numeric"
           />
@@ -137,7 +164,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -145,8 +174,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[5]}
-            onChange={setCharStats[5]}
+            value={charCD}
+            onChangeText={(text) => setCharCD(text)}
             placeholder="Insert CD"
             keyboardType="numeric"
           />
@@ -155,7 +184,9 @@ const CharacterStatsInput = ({ item }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn}>
           <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Icon_Attribute_Energy_Recharge.png/revision/latest/scale-to-width-down/40?cb=20210709015010" }}
+            source={{
+              uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Icon_Attribute_Energy_Recharge.png/revision/latest/scale-to-width-down/40?cb=20210709015010",
+            }}
             resizeMode="contain"
             style={styles.searchBtnImage}
           />
@@ -163,15 +194,15 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[6]}
-            onChange={setCharStats[6]}
+            value={charER}
+            onChangeText={(text) => setCharER(text)}
             placeholder="Insert ER"
             keyboardType="numeric"
           />
         </View>
       </View>
       <View style={styles.searchContainer}>
-        <View style={styles.searchBtn} >
+        <View style={styles.searchBtn}>
           <Image
             source={{ uri: dmgBonusType(visionType) }}
             resizeMode="contain"
@@ -181,8 +212,8 @@ const CharacterStatsInput = ({ item }) => {
         <View style={styles.searchWrapper}>
           <TextInput
             style={styles.searchInput}
-            value={charStats[7]}
-            onChange={setCharStats[7]}
+            value={charDB}
+            onChangeText={(text) => setCharDB(text)}
             placeholder="Insert DMG Bonus"
             keyboardType="numeric"
           />

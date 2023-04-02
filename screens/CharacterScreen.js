@@ -9,96 +9,66 @@ import {
   TextInput,
   Modal,
 } from "react-native";
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
 import { COLORS, icons, SIZES, FONT } from "../constants";
+
 import SearchCharacter from "../components/SearchCharacter";
-
-import { CHARACTERS } from "../data/charactersData";
 import CharacterCard from "../components/CharacterCard";
-import { dodavanjeLika } from "../store/actions/characters";
+import CategoryTab from "../components/CategoryTab";
+import { CHARACTERS } from "../data/charactersData";
 
-const visionTypes = [
-  "All",
-  "Favorites",
-];
+import { dodavanjeLika } from "../store/actions/characters";
+import CharacterList from "../components/CharacterList";
+
+const visionTypes = ["All", "Favorites"];
 
 const CharacterScreen = ({ route, navigation }) => {
   const [activeVisionType, setActiveVisionType] = useState("All");
   const [addCharacterVisible, setAddCharacterVisible] = useState(false);
 
+  const addedCharacters = useSelector(
+    (state) => state.characters.addedCharacters
+  );
+  const favoriteCharacters = useSelector(
+    (state) => state.characters.favoriteCharacters
+  );
 
+  const dispatch = useDispatch();
 
-  const addedCharacters = useSelector((state) => state.characters.addedCharacters);
-  const favoriteCharacters = useSelector((state) => state.characters.favoriteCharacters);
-
-  const dispatch = useDispatch()
-
-  const akcijaDodajLika = (item) =>{
+  const akcijaDodajLika = (item) => {
     dispatch(dodavanjeLika(item.id));
     setAddCharacterVisible(!addCharacterVisible);
-  }
+  };
 
   const unesiStats = (data) => {
-    navigation.navigate('Stats', {id: data.id});
-  }
+    navigation.navigate("Stats", { id: data.id });
+  };
 
   const filterData = (text) => {
-    if (text === "All"){
-      return addedCharacters
+    if (text === "All") {
+      return addedCharacters;
+    } else {
+      return favoriteCharacters;
     }
-    else {
-      return favoriteCharacters
-    }
-  }
+  };
 
-  
   return (
     <View>
       <View style={styles.container}>
         <Text style={styles.welcomeMessage}>Welcome Traveler!</Text>
       </View>
 
-      <View style={styles.tabsContainer}>
-        <FlatList
-          data={visionTypes}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeVisionType, item)}
-              onPress={() => {
-                setActiveVisionType(item);
-              }}
-      
-            >
-              <Text style={styles.tabText(activeVisionType, item)}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-          vertical
-          numColumns={5}
-        />
-      </View>
-
-      <View style={styles.containerCharacter}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Please select your character below.</Text>
-        </View>
-        <FlatList 
-          data={filterData(activeVisionType)}
-          renderItem = {({item}) =>
-        (
-          <CharacterCard 
-          item={item}
-          handleCardPress={unesiStats}
-          />
-         
-        )}
-        keyExtractor={ ( _, item) => item.id}
-        contentContainerStyle={{ columnGap: SIZES.medium }}
-        numColumns={3}
-          />
-      </View>
+      <CategoryTab
+        visionTypes={visionTypes}
+        vision={activeVisionType}
+        handleCategoryPress={setActiveVisionType}
+      />
+      <CharacterList
+        handleData={filterData(activeVisionType)}
+        handleCharacterPress={unesiStats}
+        context={"Please select your character below."}
+      />
 
       <View style={styles.addCharacterContainer}>
         <Modal
@@ -109,35 +79,20 @@ const CharacterScreen = ({ route, navigation }) => {
             setAddCharacterVisible(!addCharacterVisible);
           }}
         >
-          
-          <View style={styles.containerCharacter}>
-          <SearchCharacter />
-          <FlatList 
-          data={CHARACTERS}
-          renderItem = {({item}) =>
-        (
-          <CharacterCard 
-          item={item}
-          handleCardPress={akcijaDodajLika}
-          
-          />
-         
-        )}
-        keyExtractor={ (_, item) => item.id}
-        contentContainerStyle={{ columnGap: SIZES.medium }}
-        numColumns={3}
+          <CharacterList
+            handleData={CHARACTERS}
+            handleCharacterPress={akcijaDodajLika}
+            context={"Currently available characters:"}
           />
 
-            <View style={styles.closeCharacterModalButton}>
-              <TouchableOpacity
-                style={styles.addCharacterButton}
-                onPress={() => setAddCharacterVisible(!addCharacterVisible)}
-              >
-                <Text style={styles.addCharacterText}>Close</Text>
-              </TouchableOpacity>
-              </View>
+          <View style={styles.closeCharacterModalButton}>
+            <TouchableOpacity
+              style={styles.addCharacterButton}
+              onPress={() => setAddCharacterVisible(!addCharacterVisible)}
+            >
+              <Text style={styles.addCharacterText}>Close</Text>
+            </TouchableOpacity>
           </View>
-
         </Modal>
         <View style={styles.addCharacterContainer}>
           <TouchableOpacity
@@ -167,21 +122,6 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     marginTop: 2,
   },
-  tabsContainer: {
-    width: "100%",
-    marginTop: SIZES.medium,
-  },
-  tab: (activeVisionType, item) => ({
-    paddingVertical: SIZES.small / 2,
-    paddingHorizontal: SIZES.small,
-    borderRadius: SIZES.medium,
-    borderWidth: 1,
-    borderColor: activeVisionType === item ? COLORS.secondary : COLORS.gray2,
-  }),
-  tabText: (activeVisionType, item) => ({
-    fontFamily: FONT.medium,
-    color: activeVisionType === item ? COLORS.secondary : COLORS.gray2,
-  }),
   addCharacterContainer: {
     marginTop: SIZES.xLarge,
     alignItems: "center",
@@ -194,41 +134,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.small,
     borderRadius: SIZES.medium,
     borderWidth: 1,
-    borderColor: COLORS.gray,
+    borderColor: COLORS.primary,
   },
   addCharacterText: {
     fontFamily: FONT.large,
-    color: COLORS.gray,
-  },
-  //container
-  containerCharacter: {
-    marginTop: SIZES.xLarge,
+    color: COLORS.primary,
   },
   closeCharacterModalButton: {
     marginTop: SIZES.xLarge,
-    alignItems:"center"
-  },
-  //header
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  //headerTitle
-  headerTitle: {
-    fontSize: SIZES.large,
-    fontFamily: FONT.medium,
-    color: COLORS.primary,
-  },
-  //headerBtn
-  headerBtn: {
-    fontSize: SIZES.medium,
-    fontFamily: FONT.medium,
-    color: COLORS.gray,
-  },
-  //cardsContainer
-  cardsContainer: {
-    marginTop: SIZES.medium,
   },
 });
 export default CharacterScreen;

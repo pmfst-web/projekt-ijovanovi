@@ -1,22 +1,22 @@
-import React, {useState} from "react";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 import { COLORS, icons, SIZES, FONT } from "../constants";
 
 import { CHARACTERS } from "../data/charactersData";
+import CategoryTab from "../components/CategoryTab";
+import DamageDisplay from "../components/DamageDisplay";
 
-
-
-
-const enemyTypes = [
-  "Hilichurl",
-  "Prototype Array",
-  "Prototype Array Weakened"
-];
-
+const enemyTypes = ["Hilichurl", "PMA"];
 
 const DamageScreen = ({ route, navigation }) => {
-
   const [activeEnemyType, setActiveEnemyType] = useState("Hilichurl");
 
   const idCharacter = Number(route.params.id);
@@ -32,70 +32,69 @@ const DamageScreen = ({ route, navigation }) => {
   const cd = route.params.charCD;
   const db = route.params.charDB;
 
+  const getEnemyDef = (text) => {
+    if (text === "Hilichurl") {
+      return 0.5 * (1 - 0.1);
+    } else if (text === "PMA") {
+      return 0.5 * (1 - -3.0 / 2);
+    }
+  };
 
+  const dmgNormalCrit = (modi, atk, cd) => {
+    return Math.round(
+      modi * atk * (1 + cd / 100) * getEnemyDef(activeEnemyType)
+    );
+  };
 
-  const dmgNormal = ( modi, atk, cr, cd, enemyDef ) => {
-    return Math.round(modi*atk*(1 + cd/100)*enemyDef*(1 - 0.1));
-  }
+  const dmgSkillCrit = (modi, atk, cd, db) => {
+    return Math.round(
+      modi *
+        atk *
+        (1 + cd / 100) *
+        (1 + db / 100) *
+        getEnemyDef(activeEnemyType)
+    );
+  };
 
-  const dmgSkill = ( modi, atk, cr, cd, db, enemyDef) => {
-    return Math.round(modi*atk*(1 + cd/100)*(1 + db/100)*enemyDef*(1 - 0.1));
-  }
+  const dmgBurstCrit = (modi, atk, cd, db) => {
+    return Math.round(
+      modi *
+        atk *
+        (1 + cd / 100) *
+        (1 + db / 100) *
+        getEnemyDef(activeEnemyType)
+    );
+  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.white, alignItems: "center", }}>
+    <View
+      style={{ flex: 1, backgroundColor: COLORS.white, alignItems: "center" }}
+    >
       <Text style={styles.userName}>Select enemy below:</Text>
-      <View style={styles.tabsContainer}>
-        <FlatList
-          data={enemyTypes}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeEnemyType, item)}
-              onPress={() => {
-                setActiveEnemyType(item);
-              }}
-            >
-              <Text style={styles.tabText(activeEnemyType, item)}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-          vertical
-        />
-      </View>
-
-      <Text style={styles.userName}>Showing CRIT DMG only:</Text>
+      <CategoryTab
+        visionTypes={enemyTypes}
+        vision={activeEnemyType}
+        handleCategoryPress={setActiveEnemyType}
+      />
 
       <View style={styles.damageImagesContainer}>
-        <Image 
-        source={{ uri: character.talents_image[0]}}
-        style={styles.damageImages}
+        <Text style={styles.userName}>Showing Crit Hit DMG only:</Text>
+        <DamageDisplay
+          talentImage={character.talents_image[0]}
+          dmgCalc={dmgNormalCrit(normal, atk, cd)}
         />
-        <Text>{normal}</Text>
-        <Text> {dmgNormal(normal, atk, 0, cd, 0.5)} </Text>
-      </View>
-
-      <View style={styles.damageImagesContainer}>
-        <Image 
-        source={{ uri: character.talents_image[1]}}
-        style={styles.damageImages}
+        <DamageDisplay
+          talentImage={character.talents_image[1]}
+          dmgCalc={dmgSkillCrit(skill, atk, cd, db)}
         />
-        <Text>{skill}</Text>
-        <Text>{dmgSkill(skill, atk, 0, cd, db, 0.71)}</Text>
-      </View>
-      
-
-      <View style={styles.damageImagesContainer}>
-        <Image 
-        source={{ uri: character.talents_image[2]}}
-        style={styles.damageImages}
+        <DamageDisplay
+          talentImage={character.talents_image[2]}
+          dmgCalc={dmgBurstCrit(burst, atk, cd, db)}
         />
       </View>
-
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -112,36 +111,6 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     marginTop: 2,
   },
-  tabsContainer: {
-    width: "50%",
-    marginTop: SIZES.medium,
-  },
-  tab: (activeVisionType, item) => ({
-    paddingVertical: SIZES.small / 2,
-    paddingHorizontal: SIZES.small,
-    borderRadius: SIZES.medium,
-    borderWidth: 1,
-    borderColor: activeVisionType === item ? COLORS.secondary : COLORS.gray2,
-  }),
-  tabText: (activeVisionType, item) => ({
-    alignSelf: "center",
-    fontFamily: FONT.medium,
-    color: activeVisionType === item ? COLORS.secondary : COLORS.gray2,
-  }),
-  damageImagesContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  damageImages: {
-    width: 100,
-    height: 100,
-    backgroundColor: COLORS.secondary,
-    borderRadius: SIZES.medium,
-    borderWidth: 1,
-    
-  },
 });
-
 
 export default DamageScreen;

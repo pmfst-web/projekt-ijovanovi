@@ -20,13 +20,7 @@ import { dodavanjeLika } from "../store/actions/characters";
 
 const visionTypes = [
   "All",
-  "Pyro",
-  "Hydro",
-  "Electro",
-  "Cryo",
-  "Geo",
-  "Anemo",
-  "Dendro",
+  "Favorites",
 ];
 
 const CharacterScreen = ({ route, navigation }) => {
@@ -36,6 +30,7 @@ const CharacterScreen = ({ route, navigation }) => {
 
 
   const addedCharacters = useSelector((state) => state.characters.addedCharacters);
+  const favoriteCharacters = useSelector((state) => state.characters.favoriteCharacters);
 
   const dispatch = useDispatch()
 
@@ -48,13 +43,21 @@ const CharacterScreen = ({ route, navigation }) => {
     navigation.navigate('Stats', {id: data.id});
   }
 
+  const filterData = (text) => {
+    if (text === "All"){
+      return addedCharacters
+    }
+    else {
+      return favoriteCharacters
+    }
+  }
+
+  
   return (
     <View>
       <View style={styles.container}>
         <Text style={styles.welcomeMessage}>Welcome Traveler!</Text>
       </View>
-
-      <SearchCharacter />
 
       <View style={styles.tabsContainer}>
         <FlatList
@@ -65,16 +68,15 @@ const CharacterScreen = ({ route, navigation }) => {
               onPress={() => {
                 setActiveVisionType(item);
               }}
-              keyExtractor={(item) => item}
-              contentContainerStyle={{ columnGap: SIZES.small }}
-              horizontal
+      
             >
               <Text style={styles.tabText(activeVisionType, item)}>{item}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item) => item}
           contentContainerStyle={{ columnGap: SIZES.medium }}
-          horizontal
+          vertical
+          numColumns={5}
         />
       </View>
 
@@ -83,7 +85,7 @@ const CharacterScreen = ({ route, navigation }) => {
           <Text style={styles.headerTitle}>Please select your character below.</Text>
         </View>
         <FlatList 
-          data={addedCharacters}
+          data={filterData(activeVisionType)}
           renderItem = {({item}) =>
         (
           <CharacterCard 

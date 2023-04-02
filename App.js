@@ -20,8 +20,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { createStore, combineReducers } from "redux";
+import { useSelector, useDispatch } from "react-redux";
 import characterReducer from "./store/reducers/characters";
 import { Provider } from "react-redux";
+
+import { promjenaFavorita } from "./store/actions/characters";
 
 const Stack = createNativeStackNavigator();
 
@@ -61,40 +64,57 @@ export default function App() {
                 backgroundColor: COLORS.lightWhite,
               },
               headerShadowVisible: false,
-             
+
               headerTitle: "Genshin DMG Calculator",
             }}
           >
-            <Stack.Screen
-              name="Characters"
-              component={CharacterScreen}
-            
-            />
+            <Stack.Screen name="Characters" component={CharacterScreen} />
             <Stack.Screen
               name="Stats"
               component={StatsScreen}
               options={({ route, navigation }) => {
                 const idCharacter = Number(route.params.id);
                 const character = CHARACTERS.find((c) => c.id === idCharacter);
-                return {
-                  headerRight: () => (
-                    <ScreenHeaderBtn
-                      iconUrl={icons.heart}
-                      dimension="60%"
-                      handlePress={() => navigation.navigate("Characters")}
-                    />
-                  ),
-                  headerTitle: () =>(
-                    <View style={{flexDirection: "row", alignItems:"center"}}> 
-                    <Text style={styles.headerTitle}>{character?.character}</Text>
-                    <Image 
-                    source = {{ uri: character?.vision_image}}
-                    resizeMode ='contain'
-                    style={{width:20, height:20, }}
-                    />
 
+                return {
+                  headerTitle: () => (
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Text style={styles.headerTitle}>
+                        {character?.character}
+                      </Text>
+                      <Image
+                        source={{ uri: character?.vision_image }}
+                        resizeMode="contain"
+                        style={{ width: 20, height: 20 }}
+                      />
                     </View>
-                  )
+                  ),
+                };
+              }}
+            />
+            <Stack.Screen
+              name="Damage"
+              component={DamageScreen}
+              options={({ route, navigation }) => {
+                const idCharacter = Number(route.params.id);
+                const character = CHARACTERS.find((c) => c.id === idCharacter);
+                return {
+                  headerTitle: () => (
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Text style={styles.headerTitle}>
+                        {character?.character}
+                      </Text>
+                      <Image
+                        source={{ uri: character?.vision_image }}
+                        resizeMode="contain"
+                        style={{ width: 20, height: 20 }}
+                      />
+                    </View>
+                  ),
                 };
               }}
             />

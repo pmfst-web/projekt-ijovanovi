@@ -2,34 +2,25 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
   FlatList,
-  VirtualizedList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Modal,
 } from "react-native";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { COLORS, icons, SIZES, FONT } from "../constants";
 
 import { CHARACTERS } from "../data/charactersData";
-import CharacterDetails from "../components/CharacterDetails";
-import CharacterStatsInput from "../components/CharacterStatsInput";
-import { promjenaFavorita } from "../store/actions/characters";
 
-const StatsScreen = ({ route, navigation }) => {
-  const [activeCon, setActiveCon] = useState();
-  const [ charStats, setCharStats] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+const CharacterStatsInput = ({ item }) => {
 
-  const idCharacter = Number(route.params.id);
-  const character = CHARACTERS.find((c) => c.id === idCharacter);
+    const [ charStats, setCharStats] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
 
-
-  const visionType = character.vision;
+  const visionType = item.vision;
   const dmgBonusType = (visionType) => {
     if (visionType === "Anemo") {
       return "https://static.wikia.nocookie.net/gensin-impact/images/1/10/Element_Anemo.svg/revision/latest/scale-to-width-down/30?cb=20220119211128";
@@ -50,72 +41,8 @@ const StatsScreen = ({ route, navigation }) => {
     }
   };
 
-
-  const calculateDamage = (data) => {
-    navigation.navigate('Damage', {id: data.id, charStats });
-  }
-
-  const dispatch = useDispatch();
-
-  const akcijaDodajFavorita = (item) =>{
-    dispatch(promjenaFavorita(item.id));
-  }
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <CharacterDetails item={character} />
-      <View style={styles.tabsContainer}>
-        <FlatList
-          data={character.cons}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeCon, item)}
-              onPress={() => {
-                setActiveCon(item[0]);
-              }}
-            >
-              <Image
-                source={{ uri: item[1] }}
-                resizeMode="contain"
-                style={styles.conImage}
-              />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-          numColumns={3}
-        />
-        <FlatList 
-        data={character.talents_image}
-        renderItem={({item}) => (
-          <TouchableOpacity
-          style={styles.tabsTalents}
-              onPress={() => {
-              }}
-            >
-              <Image
-                source={{ uri: item }}
-                resizeMode="contain"
-                style={styles.talentImage}
-              />
-              <TextInput style={{borderWidth: 1,}}
-              
-              
-              
-              
-              
-              
-              />
-            </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item}
-        contentContainerStyle={{columnGap: SIZES.small}}
-        numColumns={3}
-        />
-      </View>
-
-      <View style={{ flex: 1, alignItems: "center", marginTop: 10, }}>
+    <View style={{ flex: 1, alignItems: "center", marginTop: 10, }}>
         <Text style={{fontSize: SIZES.large, fontFamily: FONT.bold}}>Please input your stats here:</Text>
       <View style={styles.searchContainer}>
         <View style={styles.searchBtn} >
@@ -262,108 +189,10 @@ const StatsScreen = ({ route, navigation }) => {
         </View>
       </View>
     </View>
-        
-      <View style={styles.calculateContainer}>
-        <View>
-          <TouchableOpacity
-          onPress={ () => akcijaDodajFavorita(character)}>
-          <Image
-        source={icons.heart}
-        style={{width: 30, height:30}}
-        />
-          </TouchableOpacity>
-        
-        </View>
-
-        <TouchableOpacity
-        style={styles.calculateBtn}
-        onPress={ () => calculateDamage(character)}
-        >
-              <Text style={styles.calculateText }>Calculate DMG!</Text>
-        </TouchableOpacity>
-      </View>
-
-    </View>
-    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-  },
-  conImage: {
-    width: 50,
-    height: 50,
-  },
-  talentImage: {
-    width: 65,
-    height: 65,
-    backgroundColor: COLORS.gray,
-  },
-  tabsTalents:{
-    border: 1,
-    padding: 1,
-    justifyContent: "center",
-  },
-  tabsContainer: {
-    alignItems: "center",
-    flexDirection: "row", 
-    justifyContent: "space-evenly",
-    marginTop: SIZES.small,
-  },
-  tab: (activeCon, item) => ({
-    borderRadius: SIZES.medium,
-    borderWidth: 1,
-    borderColor: activeCon === item[0] ? COLORS.secondary : COLORS.gray2,
-    backgroundColor: activeCon === item[0] ? COLORS.gray : COLORS.white,
-  }),
-  favBtn: {
-    width: 50,
-    height: "100%",
-    backgroundColor: COLORS.tertiary,
-    borderRadius: SIZES.medium,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  favBtnImage: {
-    width: "50%",
-    height: "50%",
-    tintColor: COLORS.white,
-  },
-  favWrapper: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    marginRight: SIZES.small,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: SIZES.medium,
-    height: "100%",
-  },
-  calculateContainer:{
-    flexDirection:"row",
-    justifyContent:"space-around",
-    alignItems: "center",
-    marginTop: 20,
-    paddingBottom: 10,
-
-  },
-  calculateText: {
-    fontFamily: FONT.medium,
-    fontSize: SIZES.large,
-    color: COLORS.primary,
-    alignSelf: "center",
-  },
-  calculateBtn:{
-    aligntItems:"center",
-    borderWidth: 1,
-    borderRadius: SIZES.large,
-    borderColor: COLORS.primary,
-    padding: 5,
-    width: "50%",
-
-  },
   searchContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -399,36 +228,6 @@ const styles = StyleSheet.create({
     height: "50%",
     tintColor: COLORS.white,
   },
-  //container
-  containerCharacter: {
-    marginTop: SIZES.xLarge,
-  },
-  closeCharacterModalButton: {
-    marginTop: SIZES.xLarge,
-    alignItems: "center",
-  },
-  //header
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  //headerTitle
-  headerTitle: {
-    fontSize: SIZES.large,
-    fontFamily: FONT.medium,
-    color: COLORS.primary,
-  },
-  //headerBtn
-  headerBtn: {
-    fontSize: SIZES.medium,
-    fontFamily: FONT.medium,
-    color: COLORS.gray,
-  },
-  //cardsContainer
-  cardsContainer: {
-    marginTop: SIZES.medium,
-  },
 });
 
-export default StatsScreen;
+export default CharacterStatsInput;

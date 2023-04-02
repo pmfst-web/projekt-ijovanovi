@@ -22,12 +22,21 @@ import { promjenaFavorita } from "../store/actions/characters";
 
 const StatsScreen = ({ route, navigation }) => {
   const [activeCon, setActiveCon] = useState();
-  const [ charStats, setCharStats] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+
+  const [charHP, setCharHP] = useState(0);
+  const [charATK, setCharATK] = useState(0);
+  const [charDEF, setCharDEF] = useState(0);
+  const [charEM, setCharEM] = useState(0);
+  const [charCR, setCharCR] = useState(0);
+  const [charCD, setCharCD] = useState(0);
+  const [charER, setCharER] = useState(0);
+  const [charDB, setCharDB] = useState(0);
+  const [charNormal, setCharNormal] = useState(0);
+  const [charSkill, setCharSkill] = useState(0);
+  const [charBurst, setCharBurst] = useState(0);
 
   const idCharacter = Number(route.params.id);
   const character = CHARACTERS.find((c) => c.id === idCharacter);
-
-
 
   const visionType = character.vision;
   const dmgBonusType = (visionType) => {
@@ -50,240 +59,266 @@ const StatsScreen = ({ route, navigation }) => {
     }
   };
 
-
   const calculateDamage = (data) => {
-    navigation.navigate('Damage', {id: data.id, charStats });
-  }
+    navigation.navigate("Damage", { id: data.id, charNormal, charSkill, charBurst, charHP, charATK, charDEF, charEM, charCR, charCD, charER, charDB });
+  };
 
   const dispatch = useDispatch();
 
-  const akcijaDodajFavorita = (item) =>{
+  const akcijaDodajFavorita = (item) => {
     dispatch(promjenaFavorita(item.id));
-  }
+  };
+
+  
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <CharacterDetails item={character} />
-      <View style={styles.tabsContainer}>
-        <FlatList
-          data={character.cons}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeCon, item)}
-              onPress={() => {
-                setActiveCon(item[0]);
-              }}
-            >
+      <View style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+        <CharacterDetails item={character} />
+        <View style={styles.tabsContainer}>
+          <FlatList
+            data={character.cons}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.tab(activeCon, item)}
+                onPress={() => {
+                  setActiveCon(item[0]);
+                }}
+              >
+                <Image
+                  source={{ uri: item[1] }}
+                  resizeMode="contain"
+                  style={styles.conImage}
+                />
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item}
+            contentContainerStyle={{ columnGap: SIZES.medium }}
+            numColumns={3}
+          />
+
+          <View style={styles.tabsTalents}>
+            
+            <View style={{padding: 1}}>
               <Image
-                source={{ uri: item[1] }}
-                resizeMode="contain"
-                style={styles.conImage}
-              />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-          numColumns={3}
-        />
-        <FlatList 
-        data={character.talents_image}
-        renderItem={({item}) => (
-          <TouchableOpacity
-          style={styles.tabsTalents}
-              onPress={() => {
-              }}
-            >
-              <Image
-                source={{ uri: item }}
+                source={{ uri: character.talents_image[0] }}
                 resizeMode="contain"
                 style={styles.talentImage}
               />
-              <TextInput style={{borderWidth: 1,}}
-              
-              
-              
-              
-              
-              
+              <TextInput style={{ borderWidth: 1 }} 
+              value={charNormal}
+              onChangeText={(text) => setCharNormal(text)}
+              placeholder="Normal"
+              keyboardType="numeric"/>
+            </View>
+            <View style={{padding: 1}}>
+              <Image
+                source={{ uri: character.talents_image[1] }}
+                resizeMode="contain"
+                style={styles.talentImage}
               />
+              <TextInput style={{ borderWidth: 1 }} 
+              value={charSkill}
+              onChangeText={(text) => setCharSkill(text)}
+              placeholder="Skill"
+              keyboardType="numeric"/>
+            </View>
+            <View style={{padding: 1}}>
+              <Image
+                source={{ uri: character.talents_image[2] }}
+                resizeMode="contain"
+                style={styles.talentImage}
+              />
+              <TextInput style={{ borderWidth: 1 }} 
+              value={charBurst}
+              onChangeText={(text) => setCharBurst(text)}
+              placeholder="Burst"
+              keyboardType="numeric"/>
+            </View>
+          </View>
+        </View>
+
+        <View style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
+          <Text style={{ fontSize: SIZES.large, fontFamily: FONT.bold }}>
+            Please input your stats here:
+          </Text>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/56/Icon_Attribute_Health.png/revision/latest/scale-to-width-down/40?cb=20210709015027",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charHP}
+                onChangeText={(text) => setCharHP(text)}
+                placeholder="Insert HP"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/71/Icon_Attribute_Attack.png/revision/latest/scale-to-width-down/40?cb=20210709014926",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charATK}
+                onChangeText={(text) => setCharATK(text)}
+                placeholder="Insert ATK"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/82/Icon_Attribute_Defense.png/revision/latest/scale-to-width-down/40?cb=20210709014949",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charDEF}
+                onChangeText={(text) => setCharDEF(text)}
+                placeholder="Insert DEF"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/5a/Icon_Attribute_Elemental_Mastery.png/revision/latest/scale-to-width-down/40?cb=20210709015004",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charEM}
+                onChangeText={(text) => setCharEM(text)}
+                placeholder="Insert EM"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charCR}
+                onChangeText={(text) => setCharCR(text)}
+                placeholder="Insert CR"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charCD}
+                onChangeText={(text) => setCharCD(text)}
+                placeholder="Insert CD"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{
+                  uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Icon_Attribute_Energy_Recharge.png/revision/latest/scale-to-width-down/40?cb=20210709015010",
+                }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charER}
+                onChangeText={(text) => setCharER(text)}
+                placeholder="Insert ER"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBtn}>
+              <Image
+                source={{ uri: dmgBonusType(visionType) }}
+                resizeMode="contain"
+                style={styles.searchBtnImage}
+              />
+            </View>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={charDB}
+                onChangeText={(text) => setCharDB(text)}
+                placeholder="Insert DMG Bonus"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.calculateContainer}>
+          <View>
+            <TouchableOpacity onPress={() => akcijaDodajFavorita(character)}>
+              <Image source={icons.heart} style={{ width: 30, height: 30 }} />
             </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item}
-        contentContainerStyle={{columnGap: SIZES.small}}
-        numColumns={3}
-        />
-      </View>
+          </View>
 
-      <View style={{ flex: 1, alignItems: "center", marginTop: 10, }}>
-        <Text style={{fontSize: SIZES.large, fontFamily: FONT.bold}}>Please input your stats here:</Text>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn} >
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/56/Icon_Attribute_Health.png/revision/latest/scale-to-width-down/40?cb=20210709015027" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[0]}
-            onChange={setCharStats[0]}
-            placeholder="Insert HP"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/71/Icon_Attribute_Attack.png/revision/latest/scale-to-width-down/40?cb=20210709014926" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[1]}
-            onChange={setCharStats[1]}
-            placeholder="Insert ATK"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/82/Icon_Attribute_Defense.png/revision/latest/scale-to-width-down/40?cb=20210709014949" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[2]}
-            onChange={setCharStats[2]}
-            placeholder="Insert DEF"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/5/5a/Icon_Attribute_Elemental_Mastery.png/revision/latest/scale-to-width-down/40?cb=20210709015004" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[3]}
-            onChange={setCharStats[3]}
-            placeholder="Insert EM"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[4]}
-            onChange={setCharStats[4]}
-            placeholder="Insert CR"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/8/84/Icon_Attribute_Critical_Hit.png/revision/latest/scale-to-width-down/40?cb=20210709014938" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[5]}
-            onChange={setCharStats[5]}
-            placeholder="Insert CD"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn}>
-          <Image
-            source={{ uri: "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Icon_Attribute_Energy_Recharge.png/revision/latest/scale-to-width-down/40?cb=20210709015010" }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[6]}
-            onChange={setCharStats[6]}
-            placeholder="Insert ER"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBtn} >
-          <Image
-            source={{ uri: dmgBonusType(visionType) }}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </View>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={charStats[7]}
-            onChange={setCharStats[7]}
-            placeholder="Insert DMG Bonus"
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-    </View>
-        
-      <View style={styles.calculateContainer}>
-        <View>
           <TouchableOpacity
-          onPress={ () => akcijaDodajFavorita(character)}>
-          <Image
-        source={icons.heart}
-        style={{width: 30, height:30}}
-        />
+            style={styles.calculateBtn}
+            onPress={() => calculateDamage(character)}
+          >
+            <Text style={styles.calculateText}>Calculate DMG!</Text>
           </TouchableOpacity>
-        
         </View>
-
-        <TouchableOpacity
-        style={styles.calculateBtn}
-        onPress={ () => calculateDamage(character)}
-        >
-              <Text style={styles.calculateText }>Calculate DMG!</Text>
-        </TouchableOpacity>
+        <Text> {charATK} </Text>
+        <Text> {charNormal}</Text>
       </View>
-
-    </View>
     </ScrollView>
   );
 };
@@ -302,14 +337,15 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: COLORS.gray,
   },
-  tabsTalents:{
+  tabsTalents: {
+    flexDirection: "row",
     border: 1,
     padding: 1,
     justifyContent: "center",
   },
   tabsContainer: {
     alignItems: "center",
-    flexDirection: "row", 
+    flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: SIZES.small,
   },
@@ -341,13 +377,12 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.medium,
     height: "100%",
   },
-  calculateContainer:{
-    flexDirection:"row",
-    justifyContent:"space-around",
+  calculateContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
     marginTop: 20,
     paddingBottom: 10,
-
   },
   calculateText: {
     fontFamily: FONT.medium,
@@ -355,14 +390,13 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     alignSelf: "center",
   },
-  calculateBtn:{
-    aligntItems:"center",
+  calculateBtn: {
+    aligntItems: "center",
     borderWidth: 1,
     borderRadius: SIZES.large,
     borderColor: COLORS.primary,
     padding: 5,
     width: "50%",
-
   },
   searchContainer: {
     justifyContent: "center",

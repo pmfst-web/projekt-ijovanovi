@@ -64,7 +64,7 @@ const CharacterScreen = ({ route, navigation }) => {
           data={visionTypes}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={styles.tab(visionTypes, item)}
+              style={styles.tab(activeVisionType, item)}
               onPress={() => {
                 setActiveVisionType(item);
               }}

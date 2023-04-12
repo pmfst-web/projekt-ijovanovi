@@ -21,28 +21,32 @@ const Talents = ({
   charBurst,
   setCharBurst,
 }) => {
-  return (
-    <View style={styles.tabsContainer}>
-      <FlatList
-        data={character.cons}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.tab(activeCon, item)}
+
+  const cons = [];
+  for(let i = 0; i < 6; i++){
+    cons.push(
+      <TouchableOpacity
+      key = {character.cons[i][0]}
+            style={styles.tab(activeCon, character.cons[i])}
             onPress={() => {
-              handleConPress(item[0]);
+              handleConPress(character.cons[i][0]);
             }}
           >
             <Image
-              source={{ uri: item[1] }}
+              source={{ uri: character.cons[i][1] }}
               resizeMode="contain"
               style={styles.conImage}
             />
           </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item}
-        contentContainerStyle={{ columnGap: SIZES.medium }}
-        numColumns={3}
-      />
+    )
+  };
+
+  return (
+    <View style={styles.tabsContainer}>
+      <View style={styles.tabCons}>
+         {cons}
+
+      </View>
 
       <View style={styles.tabsTalents}>
         <View style={{ padding: 1 }}>
@@ -105,6 +109,13 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: COLORS.gray,
   },
+  tabCons: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   tabsTalents: {
     flexDirection: "row",
     border: 1,
@@ -120,8 +131,8 @@ const styles = StyleSheet.create({
   tab: (activeCon, item) => ({
     borderRadius: SIZES.medium,
     borderWidth: 1,
-    borderColor: activeCon === item[0] ? COLORS.secondary : COLORS.gray2,
-    backgroundColor: activeCon === item[0] ? COLORS.gray : COLORS.white,
+    borderColor: activeCon >= item[0]  ? COLORS.secondary : COLORS.gray2,
+    backgroundColor: activeCon >= item[0]  ? COLORS.gray : COLORS.white,
   }),
 });
 

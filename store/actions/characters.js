@@ -16,3 +16,12 @@ export const dodavanjeLika = (id) => {
     idCharacter: id,
   };
 };
+
+export const SPREMANJE_DMG = 'SPREMANJE_DMG';
+
+export const spremanjeDMG = (num) => {
+  return {
+      type: SPREMANJE_DMG,
+      payload: num
+  };
+};

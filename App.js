@@ -25,6 +25,8 @@ import characterReducer from "./store/reducers/characters";
 import { Provider } from "react-redux";
 
 import { promjenaFavorita } from "./store/actions/characters";
+import damageReducer from "./store/reducers/talent";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +35,7 @@ SplashScreen.preventAutoHideAsync();
 // Spajanje svih reducera u jedan objekt
 const glavniReducer = combineReducers({
   characters: characterReducer,
+  damage: damageReducer,
 });
 // Stvaramo centralni spremnik
 const store = createStore(glavniReducer);

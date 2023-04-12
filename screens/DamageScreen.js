@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,9 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Button,
+  Alert,
+  ScrollView,
 } from "react-native";
 
 import { COLORS, icons, SIZES, FONT } from "../constants";
@@ -13,24 +16,54 @@ import { COLORS, icons, SIZES, FONT } from "../constants";
 import { CHARACTERS } from "../data/charactersData";
 import CategoryTab from "../components/CategoryTab";
 import DamageDisplay from "../components/DamageDisplay";
+import Buffs from "../components/Buffs";
+import { CheckBox } from "react-native-elements";
+
+import { spremanjeDMG } from "../store/actions/characters";
+import { useSelector, useDispatch } from "react-redux";
 
 const enemyTypes = ["Hilichurl", "PMA"];
 
 const DamageScreen = ({ route, navigation }) => {
   const [activeEnemyType, setActiveEnemyType] = useState("Hilichurl");
+  const [bennett, setBennett] = useState(false);
+  const [emblem, setEmblem] = useState(false);
 
   const idCharacter = Number(route.params.id);
   const character = CHARACTERS.find((c) => c.id === idCharacter);
 
   const n = Number(route.params.charNormal);
   const normal = character.normal[n - 1];
-  const s = Number(route.params.charNormal);
+  const s = Number(route.params.charSkill);
   const skill = character.skill[s - 1];
-  const burst = character.burst[Number(route.params.charNormal) - 1];
+  const b = Number(route.params.charBurst);
+  const burst = character.burst[ b - 1];
 
   const atk = route.params.charATK;
+  const [attack, setAttack] = useState(atk);
+  const hp = route.params.charHP;
   const cd = route.params.charCD;
+  const [critd, setCritD] = useState(cd);
   const db = route.params.charDB;
+  const [damageb, setDamageBonus] = useState(db);
+  const er = route.params.charER;
+  const [energy, setEnergy] = useState(er);
+
+  useEffect(() => {
+    if (bennett === true){
+      setAttack(parseFloat(atk) + 1030);
+    }
+    else{
+      setAttack(atk);
+    }
+    if (emblem === true){
+      setDamageBonus((0.25 * parseFloat(er)) + parseFloat(db));
+    }
+    else{
+      setDamageBonus(db);
+    }
+
+  }, [bennett, emblem]);
 
   const getEnemyDef = (text) => {
     if (text === "Hilichurl") {
@@ -66,33 +99,92 @@ const DamageScreen = ({ route, navigation }) => {
     );
   };
 
-  return (
-    <View
-      style={{ flex: 1, backgroundColor: COLORS.white, alignItems: "center" }}
-    >
-      <Text style={styles.userName}>Select enemy below:</Text>
-      <CategoryTab
-        visionTypes={enemyTypes}
-        vision={activeEnemyType}
-        handleCategoryPress={setActiveEnemyType}
-      />
+  const dispatch = useDispatch();
+  const spremljenDMG = useSelector((state) => state.damage);
 
-      <View style={styles.damageImagesContainer}>
-        <Text style={styles.userName}>Showing Crit Hit DMG only:</Text>
-        <DamageDisplay
-          talentImage={character.talents_image[0]}
-          dmgCalc={dmgNormalCrit(normal, atk, cd)}
+  const spremiDMG = (num) => {
+    dispatch(spremanjeDMG(num));
+  };
+  const postaviBennett = (ben) => {
+    setBennett(!ben);
+  };
+
+  const compareDMG = () => {
+    Alert.alert(
+      "DMG Comparison",
+      "Burst damage difference is " +
+        (dmgBurstCrit(burst, attack, critd, damageb) - spremljenDMG),
+      [{ text: "OK" }],
+      { cancelable: false }
+    );
+  };
+  const savedDMG = () => {
+    spremiDMG(dmgBurstCrit(burst, attack, critd, damageb));
+    Alert.alert(
+      "DMG Saved",
+      "Damage saved for " + character.character,
+      [{ text: "OK" }],
+      { cancelable: false }
+    );
+  };
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View
+        style={{ flex: 1, backgroundColor: COLORS.white, alignItems: "center" }}
+      >
+        <Text style={styles.userName}>Select enemy below:</Text>
+        <CategoryTab
+          visionTypes={enemyTypes}
+          vision={activeEnemyType}
+          handleCategoryPress={setActiveEnemyType}
         />
-        <DamageDisplay
-          talentImage={character.talents_image[1]}
-          dmgCalc={dmgSkillCrit(skill, atk, cd, db)}
-        />
-        <DamageDisplay
-          talentImage={character.talents_image[2]}
-          dmgCalc={dmgBurstCrit(burst, atk, cd, db)}
-        />
+
+        <View style={styles.damageImagesContainer}>
+          <Text style={styles.userName}>Showing Crit Hit DMG only:</Text>
+          <DamageDisplay
+            talentImage={character.talents_image[0]}
+            dmgCalc={dmgNormalCrit(normal, attack, critd)}
+          />
+          <DamageDisplay
+            talentImage={character.talents_image[1]}
+            dmgCalc={dmgSkillCrit(skill, attack, critd, damageb)}
+          />
+          <DamageDisplay
+            talentImage={character.talents_image[2]}
+            dmgCalc={dmgBurstCrit(burst, attack, critd, damageb)}
+          />
+        </View>
+        
+        <Text style={styles.userName}>Want to add buffs?</Text>
+        <View style={styles.tabBuffs}>
+          <CheckBox
+            title="Bennett"
+            checked={bennett}
+            onPress={() => setBennett(!bennett)}
+            containerStyle = {styles.checkboxContainer}
+            checkedColor={COLORS.gray}
+          />
+          <CheckBox
+            title="Emblem"
+            checked={emblem}
+            onPress={() => setEmblem(!emblem)}
+            containerStyle = {styles.checkboxContainer}
+            checkedColor={COLORS.gray}
+          />
+        </View>
+
+        <View style={styles.calculateContainer}>
+          <TouchableOpacity style={styles.calculateBtn} onPress={savedDMG}>
+            <Text style={styles.calculateText}>Save DMG!</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.calculateBtn} onPress={compareDMG}>
+            <Text style={styles.calculateText}>Compare DMG!</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -110,6 +202,41 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xLarge,
     color: COLORS.primary,
     marginTop: 2,
+  },
+  calculateContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: 20,
+    paddingBottom: 10,
+  },
+  calculateText: {
+    fontFamily: FONT.medium,
+    fontSize: SIZES.large,
+    color: COLORS.primary,
+    alignSelf: "center",
+  },
+  calculateBtn: {
+    aligntItems: "center",
+    borderWidth: 1,
+    borderRadius: SIZES.small,
+    borderColor: COLORS.primary,
+    padding: 5,
+    width: "45%",
+  },
+  checkboxContainer: {
+    borderWidth: 1,
+    borderRadius: SIZES.small,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.lightWhite,
+  },
+
+  tabBuffs: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

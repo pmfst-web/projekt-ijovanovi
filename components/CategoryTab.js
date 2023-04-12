@@ -27,8 +27,7 @@ const CategoryTab = ({ visionTypes, vision, handleCategoryPress }) => {
         )}
         keyExtractor={(item) => item}
         contentContainerStyle={{ columnGap: SIZES.medium }}
-        vertical
-        numColumns={5}
+        horizontal
       />
     </View>
   );

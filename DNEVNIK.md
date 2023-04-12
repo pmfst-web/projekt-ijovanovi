@@ -68,3 +68,10 @@ Pocetak | Kraj
 22:00   | 01:00
 ### Kratki opis promjena
 Dovrsen prototip, trenutno radi DMG za Raiden Shogun i Eula, ostali ce biti dodani(a trenutno imaju placeholder data modifiere od Raiden). Planirano jos stiliziranje prema vision bojama, i spomenute ekstra funckionalnosti.
+
+## 12.4.2023.
+Pocetak | Kraj
+------- | ----
+16:00   | 20:40
+### Kratki opis promjena
+Dodan redux za dmg, dovrsen Damage Screen s buffovima i usporedbom builda.

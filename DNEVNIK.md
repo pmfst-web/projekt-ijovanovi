@@ -75,3 +75,10 @@ Pocetak | Kraj
 16:00   | 20:40
 ### Kratki opis promjena
 Dodan redux za dmg, dovrsen Damage Screen s buffovima i usporedbom builda.
+
+## 13.4.2023.
+Pocetak | Kraj
+------- | ----
+11:00   | 13:30
+### Kratki opis promjena
+Prepravljeno spremanje DMG i malo stiliziranje za isto.

@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   damageImages: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     backgroundColor: COLORS.secondary,
     borderRadius: SIZES.medium,
     borderWidth: 1,
